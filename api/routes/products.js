@@ -7,14 +7,19 @@ const Product = require("../models/products");
 //get all the product from data base
 router.get("/", (req, res, next) => {
   Product.find()
+    .select("name price _id")
     .exec()
     .then((docs) => {
-      console.log(docs);
-      if (docs.length >= 0) {
-        res.status(200).json(docs);
-      } else {
-        res.status(404).json({ message: "No Data Found" });
-      }
+      const response = {
+        count: docs.length,
+        products: docs,
+      };
+      // console.log(docs);
+      // if (docs.length >= 0) {
+      res.status(200).json(response);
+      // } else {
+      //   res.status(404).json({ message: "No Data Found" });
+      // }
     })
     .catch((err) => {
       console.log(err);
@@ -33,8 +38,17 @@ router.post("/", (req, res, next) => {
     .then((result) => {
       console.log(result);
       res.status(201).json({
-        message: "handling POST request to /products",
-        createdProduct: result,
+        message: "Product created successfully",
+        createdProduct: {
+          name: result.name,
+          price: result.price,
+          _id: result.id,
+          //sending request is optional
+          request: {
+            type: "GET",
+            url: "http://localhost:5000/products" + result._id,
+          },
+        },
       });
     })
     .catch((err) => {
