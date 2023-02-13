@@ -6,12 +6,14 @@ const productRoutes = require("./api/routes/products");
 const orderRoutes = require("./api/routes/orders");
 const auditRoutes = require("./api/routes/audit");
 const mongoose = require("mongoose");
-
+var cors = require("cors");
 mongoose.connect(
   "mongodb+srv://expelee:expelee@cluster0.emvn8dw.mongodb.net/?retryWrites=true&w=majority"
 );
 
 app.use(morgan("dev"));
+
+app.use(cors({ origin: true, credentials: true }));
 app.use(bodyParser.urlencoded({ extended: false }));
 //extract json data
 app.use(bodyParser.json());
