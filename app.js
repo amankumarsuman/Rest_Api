@@ -4,14 +4,12 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const productRoutes = require("./api/routes/products");
 const orderRoutes = require("./api/routes/orders");
+const auditRoutes = require("./api/routes/audit");
 const mongoose = require("mongoose");
 
-// mongoose.connect(
-//   "mongodb+srv://ritesh:" +
-//     process.env.MONGO_PW +
-//     "@cluster0.vrp9qso.mongodb.net/humanResource?retryWrites=true&w=majority"
-
-// );
+mongoose.connect(
+  "mongodb+srv://expelee:expelee@cluster0.emvn8dw.mongodb.net/?retryWrites=true&w=majority"
+);
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -32,6 +30,7 @@ app.use(bodyParser.json());
 // });
 app.use("/products", productRoutes);
 app.use("/order", orderRoutes);
+app.use("/api/auditReport", auditRoutes);
 
 app.use((req, res, next) => {
   const error = new Error("Not Found");
